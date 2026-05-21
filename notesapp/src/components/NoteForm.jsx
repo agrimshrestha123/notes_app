@@ -1,8 +1,9 @@
 import { useState } from 'react'
 
-const NoteForm = ({ onAddNote }) => {
-    const [title, setTitle] = useState('')
-    const[content, setContent] = useState('')
+const NoteForm = ({ onAddNote, editingNote }) => {
+    const [title, setTitle] = useState(editingNote ? editingNote.title : '')
+    const[content, setContent] = useState(editingNote ? editingNote.content : '')
+   
     function handleSubmit(e){
         e.preventDefault()
         const trimmedTitle = title.trim()

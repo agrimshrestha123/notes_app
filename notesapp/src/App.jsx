@@ -1,9 +1,10 @@
 import './App.css'
 import NotesList from './components/NotesList'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import NoteForm from './components/NoteForm'
 
 function App() {
+  const [editingNote, setEditingNote] = useState(null)
   const [notes, setNotes] = useState([
    {
      id: 1,
@@ -20,8 +21,13 @@ function App() {
      title: 'Third Note',
      content: 'This is the content of the third note.'
    }
-  ])  
-
+  ]) 
+function handleEditNote(note){
+  setEditingNote(note)
+} 
+function handleDeleteNote(id){
+  setNotes(notes.filter((note)=>note.id !==id))
+}
 function handleAddNote(noteData){
   const newNote={
     id: Date.now(),
@@ -33,8 +39,9 @@ function handleAddNote(noteData){
   return (
        <main className='app'>
        <h1>My Notes App</h1>
-        <NoteForm onAddNote={handleAddNote} />
-        <NotesList notes={notes} />
+        <NoteForm onAddNote={handleAddNote} editingNote={editingNote}  key={editingNote ? editingNote.id : 'new-note'} />
+        {editingNote && <p>Editing: {editingNote.title}</p>}
+        <NotesList notes={notes} onDeleteNote={handleDeleteNote} onEditNote={handleEditNote} />
           <button type="button" onClick={()=> setNotes([])}>
             clear notes
         </button>
