@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const NoteForm = ({ onAddNote, editingNote }) => {
+const NoteForm = ({ onSaveNote, onCancelEdit, editingNote }) => {
     const [title, setTitle] = useState(editingNote ? editingNote.title : '')
     const[content, setContent] = useState(editingNote ? editingNote.content : '')
    
@@ -11,7 +11,7 @@ const NoteForm = ({ onAddNote, editingNote }) => {
         if(!trimmedTitle && !trimmedContent){
             return
         }
-        onAddNote({
+        onSaveNote({
             title: trimmedTitle,
             content: trimmedContent
         })
@@ -31,7 +31,10 @@ return (
         value={content}
         onChange={(event)=>setContent(event.target.value)}
         />
-        <button type='submit'>Add Note</button>
+        <button type='submit'>{editingNote ? 'Update Note' : 'Add Note'}</button>
+        {
+            editingNote && <button type='button' onClick={onCancelEdit}>Cancel</button>
+        }
     </form>
 )
 }
