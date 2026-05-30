@@ -1,11 +1,17 @@
 import './App.css'
 import NotesList from './components/NotesList'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import NoteForm from './components/NoteForm'
 
 function App() {
   const [editingNote, setEditingNote] = useState(null)
-  const [notes, setNotes] = useState([
+  const [notes, setNotes] = useState(()=>{
+    const savedNotes=localStorage.getItem('notes')
+    if(savedNotes){
+      return JSON.parse(savedNotes)
+    }
+    return [
+      
     {
       id: 1,
       title: 'First Note',
@@ -21,8 +27,12 @@ function App() {
       title: 'Third Note',
       content: 'This is the content of the third note.'
     }
-  ])
-
+  ]
+    
+  })
+useEffect(()=>{
+  localStorage.setItem('notes', JSON.stringify(notes))
+}, [notes])
   function handleEditNote(note) {
     setEditingNote(note)
   }
